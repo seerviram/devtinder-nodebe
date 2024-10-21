@@ -1,12 +1,24 @@
-const authHandler = (req,res,next)=> {
-    console.log('data');
-    const authorized = true;
-    if(authorized){
-        next();
-    } else{
-        res.status(401).send('unauthorized')
+const UserModel = require("../models/user");
+const jwt = require("jsonwebtoken")
+
+const userAuthHandler = async(req,res,next)=> {
+ try{
+    const cookies = req.cookies;
+    const {token } = cookies;
+    if(!token){
+        throw new Error('token invalid')
     }
+   const decodedToekn = await jwt.verify(token, "bholaramseervi");
+   const user = await UserModel.findById(decodedToekn._id);
+   if(!user){
+    throw new Error ('User not found')
+   }
+   req.user = user;
+   next();
+ } catch(err){
+  res.send('Error: '+ err.messsage);
+ }
 }
 module.exports = {
-    authHandler
+    userAuthHandler
 }
