@@ -5,60 +5,17 @@ const UserModel = require("./models/user");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require('jsonwebtoken');
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
 
 const app = express();
 app.use(express.json())
 app.use(cookieParser());
 
-app.post("/signup", async(req, res)=> {
-
-    // Validate the data
-
-    const {firstName, lastName, emailId, password} = req.body;
-      // Encrypt the password
-     const hashedPassword = await bcrypt.hash(password,10);
-     
-    const newUser = new UserModel({
-        firstName,lastName, emailId, password: hashedPassword
-    });
-    try{
-        await newUser.save();
-        res.send('user created successfully');
-    }
-    catch (err){
-    res.status(400).send('bad request '+ err.message)
-    }
-});
-
-app.post("/login", async(req, res)=> {
-    try{
-        const { emailId, password} = req.body;
-        const user = await  UserModel.findOne({emailId: emailId});
-        if(!user){
-         throw new Error('Emailid not present in the db')
-        }
-        console.log(user);
-        const isPasswordSame = await user.passwordValidate(password);
-        if(!isPasswordSame){
-            throw new Error('Password is incorrect');
-        } else{
-            const token  = await user.getJWTToken();
-            res.cookie('token', token);
-            res.send("login successfully");
-        }
-    }catch(err){
-        res.send(`Error: ${err.message}`)
-    }
-})
-
-app.get("/profile", userAuthHandler, async (req, res)=> {
-    console.log('req', req);
-    try{
-       res.send(req.user);
-    } catch(err){
-        console.log('error'+ err.message)
-    }
-})
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
 
 // GET Feed
 app.get("/feed",async(req,res)=> {
