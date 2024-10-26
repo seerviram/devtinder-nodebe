@@ -64,5 +64,5 @@ connectDB().then(()=> {
     console.log('connected');
     app.listen(3000);
 }).catch(e=> {
-    console.log('error in connecting');
+    console.log('error in connecting'+ e.message);
 })
