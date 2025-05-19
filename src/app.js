@@ -80,5 +80,3 @@ connectDB().then(()=> {
     console.log('error in connecting'+ e.message);
 })
 
-// access key - AKIA36JQDWLGDOQDX4CB
-// secret acc key- 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
