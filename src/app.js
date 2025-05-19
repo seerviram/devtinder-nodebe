@@ -12,11 +12,11 @@ const { userRouter } = require("./routes/user");
 const cors = require('cors')
 const dotenv = require('dotenv')
 const path = require('path');
-const envFile = `.env.${process.env.NODE_ENV || 'dev'}`
+// const envFile = `.env.${process.env.NODE_ENV || 'dev'}`
 
- const filePath = path.resolve(process.cwd(), envFile)
+//  const filePath = path.resolve(process.cwd(), envFile)
 
- dotenv.config({ path: filePath });
+//  dotenv.config({ path: filePath });
 
  require("./cronjob")
 
