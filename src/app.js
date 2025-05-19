@@ -10,6 +10,15 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const { userRouter } = require("./routes/user");
 const cors = require('cors')
+const dotenv = require('dotenv')
+const path = require('path');
+const envFile = `.env.${process.env.NODE_ENV || 'dev'}`
+
+ const filePath = path.resolve(process.cwd(), envFile)
+
+ dotenv.config({ path: filePath });
+
+ require("./cronjob")
 
 const app = express();
 app.use(express.json())
@@ -70,3 +79,6 @@ connectDB().then(()=> {
 }).catch(e=> {
     console.log('error in connecting'+ e.message);
 })
+
+// access key - AKIA36JQDWLGDOQDX4CB
+// secret acc key- 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
