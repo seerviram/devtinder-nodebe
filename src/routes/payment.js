@@ -86,8 +86,9 @@ const webhookSignature = req.get("X-Razorpay-Signature")
 
 })
 
-paymentRouter.get("/premium/verify", async(req,res)=> {
-    const user = req.user.toJSON()
+paymentRouter.get("/premium/verify", userAuthHandler,async(req,res)=> {
+    const user = req.user;
+    console.log('userdata', user)
      return res.json({isPremium: user.isPremium})
 })
 
