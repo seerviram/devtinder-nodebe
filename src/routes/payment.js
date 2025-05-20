@@ -65,7 +65,8 @@ const webhookSignature = req.get("X-Razorpay-Signature")
 
  // update the user to premium
 
-    const user = UserModel.findOne({_id: payment.userId})
+    const user = await UserModel.findOne({_id: payment.userId})
+    console.log('user ', user)
     user.isPremium = true;
     await user.save();
 
@@ -78,7 +79,7 @@ console.log('payment received')
  }
 
  return res.status(200).json({message:"webhook call successfull"})
- 
+
 } catch(err){
     res.status(400).json({message:`error while veryfying webhok, ${err}`})
 }
