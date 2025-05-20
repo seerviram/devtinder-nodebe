@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken")
 const userAuthHandler = async(req,res,next)=> {
  try{
     const cookies = req.cookies;
+    console.log('cookies',cookies )
     const {token } = cookies
     if(!token){
         throw new Error('token is invalid')
@@ -16,7 +17,7 @@ const userAuthHandler = async(req,res,next)=> {
    req.user = user;
    next();
  } catch(err){
-  res.send('Error: '+ err.messsage);
+  res.send('Error: '+ err);
  }
 }
 module.exports = {
