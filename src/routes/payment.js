@@ -70,13 +70,13 @@ const webhookSignature = req.get("X-Razorpay-Signature")
     user.isPremium = true;
     await user.save();
 
- if(req.body.event=='payment.captured'){
-console.log('payment received')
- }
+    if(req.body.event=='payment.captured'){
+    console.log('payment received')
+    }
 
-  if(req.body.event=='payment.failed'){
-    console.log('payment failed')
- }
+    if(req.body.event=='payment.failed'){
+        console.log('payment failed')
+    }
 
  return res.status(200).json({message:"webhook call successfull"})
 
@@ -84,6 +84,11 @@ console.log('payment received')
     res.status(400).json({message:`error while veryfying webhok, ${err}`})
 }
 
+})
+
+paymentRouter.get("/premium/verify", async(req,res)=> {
+    const user = req.user.toJSON()
+     return res.json({isPremium: user.isPremium})
 })
 
 // webhook
